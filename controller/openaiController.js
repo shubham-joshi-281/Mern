@@ -28,6 +28,50 @@ const summaryController = async (req, res) => {
     });
   }
 };
+
+const dictonaryController = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const { data } = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `write word meaning in english \n${text}`,
+      max_tokens: 500,
+      temperature: 0.5,
+    });
+    if (data) {
+      if (data.choices[0].text) {
+        return res.status(200).json(data.choices[0].text);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({
+      message: err.message,
+    });
+  }
+};
+
+const hindiDictonaryController = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const { data } = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `write word meaning in hindi language\n${text}`,
+      max_tokens: 500,
+      temperature: 0.5,
+    });
+    if (data) {
+      if (data.choices[0].text) {
+        return res.status(200).json(data.choices[0].text);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({
+      message: err.message,
+    });
+  }
+};
 const paragraphController = async (req, res) => {
   try {
     const { text } = req.body;
@@ -49,6 +93,7 @@ const paragraphController = async (req, res) => {
     });
   }
 };
+
 const chatbotController = async (req, res) => {
   try {
     const { text } = req.body;
@@ -145,4 +190,6 @@ export {
   jsconverterController,
   pythonconverterController,
   scifiImageController,
+  dictonaryController,
+  hindiDictonaryController,
 };
